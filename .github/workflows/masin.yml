@@ -1,0 +1,48 @@
+name: Fetch ThirdParty
+
+on:
+  workflow_dispatch:
+
+jobs:
+  update-thirdparty:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clone FNA
+        run: |
+          rm -rf ThirdParty/fna
+          git clone https://github.com/8212369/fna.git ThirdParty/fna
+          cd ThirdParty/fna
+          git checkout 581920997baa6af59df0d02045b5e81b0c1adb94
+
+      - name: Clone DesktopNotifications
+        run: |
+          rm -rf ThirdParty/DesktopNotifications
+          git clone https://github.com/8212369/DesktopNotifications.git ThirdParty/DesktopNotifications
+          cd ThirdParty/DesktopNotifications
+          git checkout df40039d848aacdcf1fbceb1dc930585a4cf128d
+
+      - name: Clone Icons.Avalonia
+        run: |
+          rm -rf ThirdParty/Icons.Avalonia
+          git clone https://github.com/Projektanker/Icons.Avalonia.git ThirdParty/Icons.Avalonia
+          cd ThirdParty/Icons.Avalonia
+          git checkout 3b30d9c5467f2d6be4d4d9ac173eeebf7bad0cfe
+
+      - name: Remove nested git repos
+        run: |
+          rm -rf ThirdParty/fna/.git
+          rm -rf ThirdParty/DesktopNotifications/.git
+          rm -rf ThirdParty/Icons.Avalonia/.git
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          git add ThirdParty
+          git commit -m "Update ThirdParty" || echo "No changes"
+
+          git push
