@@ -29,9 +29,9 @@ jobs:
           dotnet --version
           dotnet --info
 
-      - name: Restore Solution
-        run: dotnet restore WPR.sln
-
+      - name: Restore
+        run: dotnet restore WPR.sln -p:EnableWindowsTargeting=true
+  
       - name: Publish Android APK
         run: |
           dotnet publish \
