@@ -37,6 +37,14 @@ jobs:
 
       - name: Restore
         run: dotnet restore WPR.sln
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android 31
+        run: |
+          sdkmanager "platforms;android-31"
+          sdkmanager "build-tools;31.0.0"
   
       - name: Publish Android APK
         run: |
